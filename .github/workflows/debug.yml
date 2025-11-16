@@ -1,0 +1,30 @@
+name: Debug Build
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Check build
+      run: npm run build
+    
+    - name: List output directory
+      run: ls -la out/
+    
+    - name: Check if index.html exists
+      run: test -f out/index.html && echo "index.html exists" || echo "index.html missing"
